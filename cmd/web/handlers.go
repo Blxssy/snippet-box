@@ -14,21 +14,14 @@ func home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	files := []string{
-		//"./ui/html/index.html",
-		"./index.html",
-		"./ui/html/partials/nav.html",
-		"./ui/html/pages/home.html",
-	}
-
-	ts, err := template.ParseFiles(files...)
+	ts, err := template.ParseFiles("./index.html")
 	if err != nil {
 		log.Println(err.Error())
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
 
-	err = ts.ExecuteTemplate(w, "base", nil)
+	err = ts.Execute(w, nil)
 	if err != nil {
 		log.Println(err.Error())
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
