@@ -11,7 +11,6 @@ func main() {
 	mux.HandleFunc("/snippet/view", snippetView)
 	mux.HandleFunc("/snippet/create", snippetCreate)
 
-	log.Println("Listening on :4000")
-	err := http.ListenAndServe(":4000", mux)
+	err := http.ListenAndServe(":8080", mux)
 	log.Fatal(err)
 }
