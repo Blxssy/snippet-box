@@ -15,7 +15,8 @@ func home(w http.ResponseWriter, r *http.Request) {
 	}
 
 	files := []string{
-		"./ui/html/index.html",
+		//"./ui/html/index.html",
+		"./index.html",
 		"./ui/html/partials/nav.html",
 		"./ui/html/pages/home.html",
 	}
