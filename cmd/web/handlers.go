@@ -20,20 +20,25 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, err)
 	}
 
-	for _, snippet := range snippets {
-		fmt.Fprintf(w, "%+v\n", snippet)
+	files := []string{
+		"./ui/html/base.html",
+		"./ui/html/partials/nav.html",
+		"./ui/html/pages/home.html",
 	}
 
-	//ts, err := template.ParseFiles("./base.html")
-	//if err != nil {
-	//	app.serverError(w, err)
-	//	return
-	//}
-	//
-	//err = ts.Execute(w, nil)
-	//if err != nil {
-	//	app.serverError(w, err)
-	//}
+	ts, err := template.ParseFiles(files...)
+	if err != nil {
+		app.serverError(w, err)
+	}
+
+	data := &templateData{
+		Snippets: snippets,
+	}
+
+	err = ts.ExecuteTemplate(w, "base", data)
+	if err != nil {
+		app.serverError(w, err)
+	}
 }
 
 func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
@@ -54,10 +59,9 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 	}
 
 	files := []string{
-		//"./ui/html/base.html",
-		"./index.html",
-		"./ui/html/partials/nav.html.tmpl",
-		"./ui/html/pages/view.html.tmpl",
+		"./ui/html/base.html",
+		"./ui/html/partials/nav.html",
+		"./ui/html/pages/view.html",
 	}
 
 	ts, err := template.ParseFiles(files...)
@@ -66,7 +70,9 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = ts.ExecuteTemplate(w, "base", snippet)
+	data := &templateData{Snippet: snippet}
+
+	err = ts.ExecuteTemplate(w, "base", data)
 	if err != nil {
 		app.serverError(w, err)
 	}
